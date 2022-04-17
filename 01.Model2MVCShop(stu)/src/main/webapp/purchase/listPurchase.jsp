@@ -122,8 +122,14 @@
 	<tr>
 		<td align="center">
 		 
-			<a href="/listPurchase.do?page=1">1</a> 
-		
+			<!-- <a href="/listPurchase.do?page=1">1</a> --> 
+		<%
+			for(int i=1; i<=totalPage; i++){
+		%>
+			<a href="/listPurchase.do?page=<%=i%>"><%=i %></a>
+		<%
+			}
+		%>
 		</td>
 	</tr>
 </table>

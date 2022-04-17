@@ -165,4 +165,8 @@ public class PurchaseDAO {
 		System.out.println("update ¿Ï·á");
 		con.close();		
 	}
+	public void updateTranCode(PurchaseVO purchaseVO) throws Exception{
+		Connection con = DBUtil.getConnection();
+		                                                                                       
+	}
 }
