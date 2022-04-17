@@ -8,8 +8,10 @@ import java.util.HashMap;
 
 import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
+import com.model2.mvc.service.product.dao.ProductDAO;
 import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.vo.PurchaseVO;
+import com.model2.mvc.service.user.dao.UserDAO;
 import com.model2.mvc.service.user.vo.UserVO;
 
 public class PurchaseDAO {
@@ -27,8 +29,8 @@ public class PurchaseDAO {
 		System.out.println(purchaseVO.getBuyer());
 		
 		String sql ="insert\r\n"
-				+ "into transaction\r\n"
-				+ "values (seq_transaction_tran_no.NEXTVAL,?,?,?,?,?,?,?,?,sysdate,?)";
+				+ " into transaction\r\n"
+				+ " values (seq_transaction_tran_no.NEXTVAL,?,?,?,?,?,?,?,?,sysdate,?)";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1, purchaseVO.getPurchaseProd().getProdNo());
@@ -48,49 +50,43 @@ public class PurchaseDAO {
 		con.close();
 		
 	}
-	
+
 	public PurchaseVO findPurchase(int tranNo) throws Exception{
 		Connection con = DBUtil.getConnection();
 	
-//		String sql = "select * from transaction where tran_no = ?";
-		String sql = "SELECT * \r\n"
-				+ " FROM transaction t, product p, users u\r\n"
-				+ " WHERE t.prod_no = p.prod_no AND t.buyer_id = u.user_id and tran_no = ?";
+		String sql = "SELECT * FROM transaction WHERE tran_no = ?";
+//		String sql = "SELECT * \r\n"
+//				+ " FROM transaction t, product p, users u\r\n"
+//				+ " WHERE t.prod_no = p.prod_no AND t.buyer_id = u.user_id and tran_no = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1,tranNo);
 		
 		ResultSet rs = stmt.executeQuery();
+		PurchaseVO pvo = new PurchaseVO();
 		
-		PurchaseVO purchaseVO =null;
 		while(rs.next()) {
-			ProductVO vo = new ProductVO();
-			vo.setProdNo(rs.getInt("prod_no"));
-			vo.setProdName(rs.getString("prod_name"));
-			vo.setProdDetail(rs.getString("prod_detail"));
-			vo.setManuDate(rs.getString("manufacture_day"));
-			vo.setPrice(rs.getInt("price"));
-			vo.setRegDate(rs.getDate("reg_date"));
-			
-			UserVO uvo = new UserVO();
-			uvo.setUserId(rs.getString("user_id"));
-			uvo.setUserName(rs.getString("user_name"));
-			uvo.setAddr(rs.getString("addr"));
-			
-			
-			PurchaseVO pvo = new PurchaseVO();
-			pvo.setBuyer(uvo);
-			pvo.setPurchaseProd(vo);
+//			ProductVO vo = new ProductVO();
+//			vo.setProdNo(rs.getInt("prod_no"));
+//			
+//			UserVO uvo = new UserVO();
+//			uvo.setUserId(rs.getString("user_id"));
+//			
+//			pvo.setPurchaseProd(vo);
+//			pvo.setBuyer(uvo);
+			pvo.setPurchaseProd(new ProductDAO().findProduct(rs.getInt("prod_no")));
+			pvo.setBuyer(new UserDAO().findUser(rs.getString("buyer_id")));
+			pvo.setPaymentOption(rs.getString("payment_option"));
 			pvo.setReceiverName(rs.getString("receiver_name"));
 			pvo.setReceiverPhone(rs.getString("receiver_phone"));
-			pvo.setDivyAddr(rs.getString("DEMAILADDR"));
+			pvo.setDivyAddr(rs.getString("demailaddr"));
 			pvo.setDivyRequest(rs.getString("dlvy_Request"));
+			pvo.setOrderDate(rs.getDate("order_data"));
 			pvo.setDivyDate(rs.getString("dlvy_date"));
-			pvo.setTranNo(rs.getInt("tran_no"));
-			
+			pvo.setTranNo(rs.getInt("tran_no"));	
+						
 		}
 		con.close();
-		stmt.close();
-		return purchaseVO;
+		return pvo;
 	}
 	
 	public HashMap<String, Object> getPurchaseList(SearchVO searchVO, String buyerId) throws Exception{
@@ -124,28 +120,49 @@ public class PurchaseDAO {
 				vo.setProdNo(rs.getInt("prod_no"));
 				
 				UserVO uvo = new UserVO();
-				uvo.setUserId(rs.getString("buyer_id"));				
+				uvo.setUserId(rs.getString("user_id"));				
 				
 				PurchaseVO pvo = new PurchaseVO();
+				pvo.setPurchaseProd(vo);
 				pvo.setBuyer(uvo);
 				pvo.setReceiverName(rs.getString("receiver_name"));
 				pvo.setReceiverPhone(rs.getString("receiver_phone"));
-				pvo.setDivyRequest(rs.getString("dlvy_Request"));
-				pvo.setDivyDate(rs.getString("dlvy_request"));
 				pvo.setTranNo(rs.getInt("tran_no"));
-				
 				list.add(pvo);
 				if(!rs.next())
 					break;
 			}
 		}
+		System.out.println("=================");
+		System.out.println(list);
+		System.out.println("=================");
+		
 		System.out.println("list.size()"+list.size());
 		map.put("list",list);
 		System.out.println("map().size():"+map.size());
-		
-		stmt.close();
 		con.close();
 		return map;
 	}
 	
+	public void updatePurchase(PurchaseVO purchaseVO) throws Exception{
+		System.out.println("=============updatePurchaseDAO 부분===========");
+		
+		Connection con = DBUtil.getConnection();
+		String sql ="UPDATE transaction\r\n"
+				+ "SET payment_option=?,receiver_name=?,receiver_phone=?, demailaddr=?,dlvy_request=?,dlvy_date=?\r\n"
+				+ "where tran_no=?";
+		
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, purchaseVO.getPaymentOption());
+		stmt.setString(2, purchaseVO.getReceiverName());
+		stmt.setString(3, purchaseVO.getReceiverPhone());
+		stmt.setString(4, purchaseVO.getDivyAddr());
+		stmt.setString(5, purchaseVO.getDivyRequest());
+		stmt.setString(6, purchaseVO.getDivyDate());
+		stmt.setInt(7, purchaseVO.getTranNo());
+		
+		stmt.executeUpdate();
+		System.out.println("update 완료");
+		con.close();		
+	}
 }

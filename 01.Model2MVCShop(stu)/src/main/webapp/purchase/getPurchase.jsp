@@ -1,11 +1,10 @@
-<%@page import="com.model2.mvc.service.user.vo.UserVO"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.model2.mvc.service.purchase.vo.PurchaseVO"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 
 <%
 	PurchaseVO purchaseVO = (PurchaseVO)request.getAttribute("purchaseVO");
-	UserVO userVO = (UserVO)session.getAttribute("user");
 %>
 <html>
 <head>
@@ -48,7 +47,7 @@
 		<td class="ct_write01">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="105"><%=purchaseVO.getPurchaseProd().getProdNo() %></td>
+					<td width="105"><%=purchaseVO.getPurchaseProd().getProdNo()%></td>
 					<td></td>
 				</tr>
 			</table>
@@ -62,7 +61,7 @@
 			구매자아이디 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=userVO.getUserId() %></td>
+		<td class="ct_write01"><%=purchaseVO.getBuyer().getUserId() %></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -140,7 +139,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="/updatePurchaseView.do?tranNo=<%=purchaseVO.getPurchaseProd().getProdNo()%>">수정</a>
+						<a href="/updatePurchaseView.do?tranNo=<%=purchaseVO.getTranNo()%>">수정</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -150,7 +149,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="javascript:history.go(-1);">확인</a>
+						<a href="javascript:history.go(-2);">확인</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif"width="14" height="23"/>

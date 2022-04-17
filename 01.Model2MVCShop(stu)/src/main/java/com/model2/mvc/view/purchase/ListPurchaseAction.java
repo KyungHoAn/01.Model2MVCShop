@@ -9,7 +9,6 @@ import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
 import com.model2.mvc.service.purchase.service.PurchaseService;
-import com.model2.mvc.service.purchase.vo.PurchaseVO;
 import com.model2.mvc.service.user.vo.UserVO;
 
 public class ListPurchaseAction extends Action{
@@ -30,10 +29,10 @@ public class ListPurchaseAction extends Action{
 		
 		UserVO userVO = new UserVO();
 		userVO = (UserVO)request.getSession().getAttribute("user");
-		
+			
 		PurchaseService service = new PurchaseServiceImpl();
 		HashMap<String,Object> map = service.getPurchaseList(searchVO, userVO.getUserId());
-		
+			
 		request.setAttribute("map", map);
 		request.setAttribute("searchVO", searchVO);
 		System.out.println("===============");

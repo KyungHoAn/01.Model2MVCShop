@@ -11,13 +11,10 @@ import com.model2.mvc.service.purchase.vo.PurchaseVO;
 public class PurchaseServiceImpl implements PurchaseService{
 	private PurchaseDAO purchaseDAO;
 	
-	private ProductDAO productDAO;
-	
 	public PurchaseServiceImpl() {
 		purchaseDAO = new PurchaseDAO();
 	}
 	public void addPurchase(PurchaseVO purchaseVO) throws Exception{
-		System.out.println("impl에서 DAO로 이동");
 		purchaseDAO.insertPurchase(purchaseVO);
 	}
 	public PurchaseVO getPurchase(int tranNo) throws Exception{
@@ -32,7 +29,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 	}
 	
 	public void updatePurchase(PurchaseVO purchaseVO) throws Exception{
-		
+		purchaseDAO.updatePurchase(purchaseVO);
 	}
 	
 	public void updateTranCode(PurchaseVO purchaseVO) throws Exception{
