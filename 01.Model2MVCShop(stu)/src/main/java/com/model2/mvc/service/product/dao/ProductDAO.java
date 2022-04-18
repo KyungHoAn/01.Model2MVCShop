@@ -99,7 +99,7 @@ public class ProductDAO {
 				vo.setPrice(rs.getInt("price"));
 				vo.setFileName(rs.getString("image_file"));
 				vo.setRegDate(rs.getDate("reg_date"));
-				
+				vo.setProTranCode(rs.getString(""));
 				list.add(vo);
 				if(!rs.next())
 					break;

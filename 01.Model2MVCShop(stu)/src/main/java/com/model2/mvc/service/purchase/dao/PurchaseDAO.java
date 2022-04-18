@@ -48,7 +48,6 @@ public class PurchaseDAO {
 		System.out.println("=======================");
 		
 		con.close();
-		
 	}
 
 	public PurchaseVO findPurchase(int tranNo) throws Exception{
@@ -128,6 +127,7 @@ public class PurchaseDAO {
 				pvo.setReceiverName(rs.getString("receiver_name"));
 				pvo.setReceiverPhone(rs.getString("receiver_phone"));
 				pvo.setTranNo(rs.getInt("tran_no"));
+				pvo.setTranCode(rs.getString("tran_status_code").trim());
 				list.add(pvo);
 				if(!rs.next())
 					break;
@@ -165,8 +165,19 @@ public class PurchaseDAO {
 		System.out.println("update 완료");
 		con.close();		
 	}
+	
 	public void updateTranCode(PurchaseVO purchaseVO) throws Exception{
 		Connection con = DBUtil.getConnection();
-		                                                                                       
+		String sql ="UPDATE transaction\r\n"
+				+ "SET tran_status_code=?\r\n"
+				+ "WHERE tran_no=?";
+		
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, purchaseVO.getTranCode());
+		stmt.setInt(2, purchaseVO.getTranNo());
+		
+		stmt.executeUpdate();
+		System.out.println("updatetrancode 완료");
+		con.close();
 	}
 }

@@ -103,12 +103,29 @@
 		<td></td>
 		<td align="left"><%=purchaseVO.getReceiverPhone() %></td>
 		<td></td>
-		<td align="left">현재
-					구매완료
-				상태 입니다.</td>
+		<td align="left">
+		<%
+			if(purchaseVO.getTranCode().equals("1")){
+		%>
+			현재구매완료상태입니다
+		<%
+			}else if(purchaseVO.getTranCode().equals("2")){
+		%>
+			현재배송중상태입니다.
+		<%
+			}else if(purchaseVO.getTranCode().equals("3")) {
+		%>
+			현재배송완료상태입니다.
+		<%} %></td>
 		<td></td>
 		<td align="left">
-			
+			<%
+				if(purchaseVO.getTranCode().equals("2")){
+			%>
+				<a href="updateTranCode.do?tranNo=<%= purchaseVO.getTranNo() %>"/>물건 도착</a>
+			<%
+				}
+			%>
 		</td>
 	</tr>
 	<tr>

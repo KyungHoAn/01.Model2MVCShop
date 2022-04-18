@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.product.dao.ProductDAO;
+import com.model2.mvc.service.product.impl.ProductServiceImpl;
+import com.model2.mvc.service.product.user.ProductService;
 import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
 import com.model2.mvc.service.purchase.service.PurchaseService;
@@ -44,6 +46,12 @@ public class AddPurchaseAction extends Action{
 		service.addPurchase(purchaseVO);
 		
 		request.setAttribute("purchaseVO", purchaseVO);
+		
+		if(purchaseVO.getTranCode().equals("1")) {
+			productVO.setProTranCode("1");
+		}
+//		ProductService service2 = new ProductServiceImpl();
+//		service2.
 		
 		System.out.println("test1");
 		return "forward:/purchase/addPurchase.jsp";

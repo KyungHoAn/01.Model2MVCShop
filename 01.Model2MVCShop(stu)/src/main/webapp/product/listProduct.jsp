@@ -1,4 +1,5 @@
 
+<%@page import="com.model2.mvc.service.purchase.vo.PurchaseVO"%>
 <%@page import="java.util.*"%>
 <%@page import="com.model2.mvc.service.product.vo.ProductVO"%>
 <%@page import="com.model2.mvc.common.SearchVO"%>
@@ -149,7 +150,6 @@
 			<%} else {%>
 				<a href="/getProduct.do?prodNo=<%=vo.getProdNo() %>"><%=vo.getProdName() %></a>
 			<%} %>		
-			
 		</td>
 		<td></td>
 		<td align="left"><%= vo.getPrice() %></td>
@@ -157,7 +157,14 @@
 		<td align="left"><%= vo.getRegDate() %>
 		</td>
 		<td></td>
-		<td align="left"><%= vo.getProTranCode() %>
+		<td align="left">				
+		<% if(vo.getProTranCode()==null){ %>
+			판매중
+		<% } else if(vo.getProTranCode().equals("1")){ %>
+			구매완료 <a href="">배송하기</a>
+		<%} %>
+		
+		<%--=vo.getProTranCode()--%>
 		</td>	
 	</tr>
 	<tr>

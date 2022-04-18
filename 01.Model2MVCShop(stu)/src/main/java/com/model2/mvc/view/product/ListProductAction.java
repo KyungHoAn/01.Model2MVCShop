@@ -9,6 +9,8 @@ import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.product.impl.ProductServiceImpl;
 import com.model2.mvc.service.product.user.ProductService;
+import com.model2.mvc.service.product.vo.ProductVO;
+import com.model2.mvc.service.purchase.vo.PurchaseVO;
 
 public class ListProductAction extends Action{
 	public String execute(	HttpServletRequest request,
@@ -18,6 +20,12 @@ public class ListProductAction extends Action{
 		
 		SearchVO searchVO = new SearchVO();
 		
+		PurchaseVO purchaseVO = new PurchaseVO();
+		ProductVO productVO = new ProductVO();
+		productVO.setProTranCode(purchaseVO.getTranCode());
+		
+		System.out.println("==================");
+		System.out.println(productVO.getProTranCode());
 		int page =1;
 		if(request.getParameter("page")!=null)
 			page = Integer.parseInt(request.getParameter("page"));
