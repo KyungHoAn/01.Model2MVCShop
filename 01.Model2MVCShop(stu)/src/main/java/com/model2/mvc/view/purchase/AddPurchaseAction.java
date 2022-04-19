@@ -47,9 +47,11 @@ public class AddPurchaseAction extends Action{
 		
 		request.setAttribute("purchaseVO", purchaseVO);
 		
-		if(purchaseVO.getTranCode().equals("1")) {
-			productVO.setProTranCode("1");
-		}
+		
+//		if(purchaseVO.getTranCode().equals("1")) {
+//			productVO.setProTranCode("2");
+//		}
+		
 //		ProductService service2 = new ProductServiceImpl();
 //		service2.
 		

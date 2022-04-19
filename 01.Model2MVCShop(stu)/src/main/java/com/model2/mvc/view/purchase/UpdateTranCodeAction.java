@@ -11,14 +11,16 @@ import com.model2.mvc.service.purchase.vo.PurchaseVO;
 public class UpdateTranCodeAction extends Action{
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		System.out.println("UpdateTranCodeAction");
-		int tranNo = Integer.parseInt(request.getParameter("tranNo"));
-		
+		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
+		String tranCode = request.getParameter("tranCode");
 		PurchaseVO purchaseVO = new PurchaseVO();
-		purchaseVO.setTranNo(tranNo);
-		
+		purchaseVO.setTranNo(prodNo);
+		purchaseVO.setTranCode(tranCode);
 		PurchaseService service = new PurchaseServiceImpl();
 		service.updateTranCode(purchaseVO);
+		
 		System.out.println("list로 이동");
-		return "forward:/purchase/listPurchase.jsp";
+		//if adming이면 produvt user면 purchase
+		return "/listProduct.do?menu=manage";
 	}
 }

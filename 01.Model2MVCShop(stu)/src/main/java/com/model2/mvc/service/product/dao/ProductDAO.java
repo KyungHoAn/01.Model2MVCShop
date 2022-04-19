@@ -9,6 +9,7 @@ import java.util.HashMap;
 import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
+import com.model2.mvc.service.purchase.vo.PurchaseVO;
 
 public class ProductDAO {
 
@@ -59,18 +60,17 @@ public class ProductDAO {
 	}
 	public HashMap<String,Object> getProductList(SearchVO searchVO) throws Exception{
 		Connection con = DBUtil.getConnection();
-		
-		String sql = "SELECT * from PRODUCT ";
+		String sql = "SELECT p.*,t.*, NVL(t.tran_status_code,0) NTSC from PRODUCT p, transaction t where p.prod_no = t.prod_no(+) ";
 		if(searchVO.getSearchCondition()!=null) {
 			if(searchVO.getSearchCondition().equals("0")) {
-				sql+= " where PROD_NO='" + searchVO.getSearchKeyword()
+				sql+= " AND p.PROD_NO='" + searchVO.getSearchKeyword()
 				+ "'";
 			} else if(searchVO.getSearchCondition().equals("1")) {
-				sql+=" where PROD_NAME='" + searchVO.getSearchKeyword()
+				sql+=" AND p.PROD_NAME='" + searchVO.getSearchKeyword()
 				+ "'";
 			}
-		}
-		sql+=" order by prod_no";
+		}		
+		sql+=" order by p.prod_no";
 		PreparedStatement stmt = con.prepareStatement(
 				sql,
 				ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -89,8 +89,9 @@ public class ProductDAO {
 		System.out.println("searchVO.getPageUnit():"+searchVO.getPageUnit());
 		
 		ArrayList<ProductVO> list = new ArrayList<ProductVO>();
+//		ArrayList<PurchaseVO> list2 = new ArrayList<PurchaseVO>();
 		if(total >0) {
-			for(int i=0; i<searchVO.getPageUnit(); i++) {
+			for(int i=0; i<searchVO.getPageUnit(); i++) {				
 				ProductVO vo = new ProductVO();
 				vo.setProdNo(rs.getInt("prod_no"));
 				vo.setProdName(rs.getString("prod_name"));
@@ -99,16 +100,22 @@ public class ProductDAO {
 				vo.setPrice(rs.getInt("price"));
 				vo.setFileName(rs.getString("image_file"));
 				vo.setRegDate(rs.getDate("reg_date"));
-				vo.setProTranCode(rs.getString(""));
+				vo.setProTranCode(rs.getString("NTSC"));
+				
+//				PurchaseVO vo2 = new PurchaseVO();
+//				vo2.setTranNo(rs.getInt("tran_no"));
 				list.add(vo);
 				if(!rs.next())
 					break;
 			}
 		}
+//		while(rs.next()) {
+//			PurchaseVO purchaseVO = new PurchaseVO();
+//			purchaseVO.setTranNo(rs.getInt("tran_No"));
+//		}
 		System.out.println("list.size():"+list.size());
 		map.put("list",list);
 		System.out.println("map().size():"+map.size());
-		
 		con.close();
 		return map;
 	}

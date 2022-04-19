@@ -170,7 +170,7 @@ public class PurchaseDAO {
 		Connection con = DBUtil.getConnection();
 		String sql ="UPDATE transaction\r\n"
 				+ "SET tran_status_code=?\r\n"
-				+ "WHERE tran_no=?";
+				+ "WHERE prod_no=?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, purchaseVO.getTranCode());
