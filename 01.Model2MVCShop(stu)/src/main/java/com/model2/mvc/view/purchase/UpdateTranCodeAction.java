@@ -13,6 +13,7 @@ public class UpdateTranCodeAction extends Action{
 		System.out.println("UpdateTranCodeAction");
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		String tranCode = request.getParameter("tranCode");
+		
 		PurchaseVO purchaseVO = new PurchaseVO();
 		purchaseVO.setTranNo(prodNo);
 		purchaseVO.setTranCode(tranCode);

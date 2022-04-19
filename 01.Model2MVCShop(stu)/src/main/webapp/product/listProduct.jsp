@@ -159,13 +159,15 @@
 		</td>
 		<td></td>
 		<td align="left">
-		<%=vo.getProTranCode() %>		
-		<% if(vo.getProTranCode().equals("0")){ %>
-			판매중
-		<% } else if(vo.getProTranCode().equals("1  ")){ %>
-			구매완료 <a href="/updateTranCode.do?prodNo=<%=vo.getProdNo()%>&tranCode=2">배송하기</a>
-		<% } else if(vo.getProTranCode().equals("2  ")){ %>
-			배송중
+		<%if(menu.equals("manage")) {%> 
+			<%=vo.getProTranCode() %>		
+			<% if(vo.getProTranCode().equals("0")){ %>
+				판매중
+			<% } else if(vo.getProTranCode().equals("1  ")){ %>
+				구매완료 <a href="/updateTranCode.do?prodNo=<%=vo.getProdNo()%>&tranCode=2">배송하기</a>
+			<% } else if(vo.getProTranCode().equals("2  ")){ %>
+				배송중
+			<%} %>
 		<%} %>
 		
 		<%--=vo.getProTranCode()--%>
