@@ -21,7 +21,7 @@ public class UpdateTranCodeAction extends Action{
 		service.updateTranCode(purchaseVO);
 		
 		System.out.println("list로 이동");
-		//if adming이면 produvt user면 purchase
+		//if admin이면 produvt user면 purchase
 		return "/listProduct.do?menu=manage";
 	}
 }
