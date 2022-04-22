@@ -122,7 +122,7 @@
 			<%
 				if(purchaseVO.getTranCode().equals("2")){
 			%>
-				 <a href="/updateTranCode.do?prodNo=<%=purchaseVO.getPurchaseProd().getProdNo()%>&tranCode=2">배송하기</a>
+				 <a href="/updateTranCode.do?prodNo=<%=purchaseVO.getPurchaseProd().getProdNo()%>&tranCode=2">물건도착</a>
 			<%
 				}
 			%>
