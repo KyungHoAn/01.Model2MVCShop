@@ -99,6 +99,7 @@ public class PurchaseDAO {
 				ResultSet.TYPE_SCROLL_INSENSITIVE,
 				ResultSet.CONCUR_UPDATABLE);
 		
+		System.out.println("buyerId=====>>"+buyerId);
 		stmt.setString(1, buyerId);
 		ResultSet rs = stmt.executeQuery();
 		rs.last();
